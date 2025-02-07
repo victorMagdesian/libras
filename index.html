@@ -14,7 +14,7 @@
     body {
       background: #1a1a1a;
       color: #eee;
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -25,7 +25,6 @@
       margin-bottom: 20px;
       font-size: 1.8rem;
     }
-    /* Container principal */
     .container {
       background: #333;
       padding: 20px;
@@ -35,7 +34,6 @@
       max-width: 500px;
       text-align: center;
     }
-    /* Campo de entrada e botão Traduzir */
     .input-area {
       margin-bottom: 20px;
     }
@@ -62,31 +60,65 @@
     .input-area button:hover {
       background: #2980b9;
     }
-    /* Área de exibição dos gestos */
-    .gesture-display {
+    .gesture-cards {
       margin-top: 20px;
-      min-height: 200px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
+      flex-direction: column;
+      gap: 15px;
     }
-    .gesture {
-      display: inline-block;
-      padding: 15px;
-      border: 2px solid #555;
+    .gesture-card {
+      background: #444;
       border-radius: 8px;
-      background: #222;
-      color: #fff;
-      font-size: 1rem;
-      text-transform: uppercase;
-      width: 100px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
       text-align: center;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
     }
-    /* Animações de gestos */
-    /* Gesto "wave" para "olá" */
+    /* Modelo de mão genérico */
+    .hand {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 10px;
+    }
+    .palm {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 80px;
+      background: #f0c987;
+      border-radius: 20px;
+    }
+    .finger {
+      position: absolute;
+      bottom: 80px;
+      width: 20px;
+      height: 50px;
+      background: #f0c987;
+      border-radius: 10px;
+    }
+    .finger.finger1 { left: 15px; }
+    .finger.finger2 { left: 40px; }
+    .finger.finger3 { left: 65px; }
+    .finger.finger4 { left: 90px; }
+    .thumb {
+      position: absolute;
+      bottom: 40px;
+      left: -10px;
+      width: 30px;
+      height: 20px;
+      background: #f0c987;
+      border-radius: 10px;
+      transform: rotate(-30deg);
+    }
+    .translated-word {
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+    /* Animações para gestos – cada gesto modifica a animação do modelo de mão */
     @keyframes wave {
       0% { transform: rotate(0deg); }
       25% { transform: rotate(10deg); }
@@ -94,71 +126,59 @@
       75% { transform: rotate(-10deg); }
       100% { transform: rotate(0deg); }
     }
-    .gesture.wave {
-      animation: fadeIn 0.5s forwards, wave 2s infinite;
+    .hand.wave {
+      animation: wave 2s infinite;
     }
-    /* Gesto "heart" para "amor" */
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-    .gesture.heart {
-      animation: fadeIn 0.5s forwards, heartbeat 1.5s infinite;
-    }
-    /* Gesto "thumbs-up" para "bom" */
-    @keyframes thumbsUp {
+    @keyframes nod {
       0% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
       100% { transform: translateY(0); }
     }
-    .gesture.thumbs-up {
-      animation: fadeIn 0.5s forwards, thumbsUp 1s infinite;
+    .hand.nod {
+      animation: nod 1s infinite;
     }
-    /* Gesto "thank-you" para "obrigado" */
-    @keyframes slideIn {
-      0% { transform: translateX(-100%); opacity: 0; }
-      100% { transform: translateX(0); opacity: 1; }
-    }
-    .gesture.thank-you {
-      animation: slideIn 1s forwards;
-    }
-    /* Gesto "yes" para "sim" */
-    @keyframes nod {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-      100% { transform: translateY(0); }
-    }
-    .gesture.yes {
-      animation: fadeIn 0.5s forwards, nod 1s infinite;
-    }
-    /* Gesto "no" para "não" */
     @keyframes shake {
       0% { transform: translateX(0); }
-      25% { transform: translateX(5px); }
+      25% { transform: translateX(10px); }
       50% { transform: translateX(0); }
-      75% { transform: translateX(-5px); }
+      75% { transform: translateX(-10px); }
       100% { transform: translateX(0); }
     }
-    .gesture.no {
-      animation: fadeIn 0.5s forwards, shake 1s infinite;
-    }
-    /* Gesto "unknown" para palavras sem tradução */
-    .gesture.unknown {
-      animation: fadeIn 1s forwards;
+    .hand.shake {
+      animation: shake 1s infinite;
     }
     @keyframes fadeIn {
       0% { opacity: 0; transform: scale(0.8); }
       100% { opacity: 1; transform: scale(1); }
     }
+    .hand.default {
+      animation: fadeIn 1s forwards;
+    }
     /* Responsividade */
     @media (max-width: 480px) {
-      .gesture {
-        width: 80px;
-        padding: 10px;
-        font-size: 0.9rem;
+      .hand {
+        width: 120px;
+        height: 120px;
       }
-      .input-area input[type="text"] {
-        width: 90%;
+      .palm {
+        width: 80px;
+        height: 64px;
+      }
+      .finger {
+        width: 16px;
+        height: 40px;
+      }
+      .finger.finger1 { left: 12px; }
+      .finger.finger2 { left: 32px; }
+      .finger.finger3 { left: 52px; }
+      .finger.finger4 { left: 72px; }
+      .thumb {
+        width: 24px;
+        height: 16px;
+        left: -8px;
+      }
+      .translated-word {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -171,51 +191,74 @@
       <br>
       <button id="translateButton">Traduzir</button>
     </div>
-    <div class="gesture-display" id="gestureDisplay">
-      <!-- Os gestos traduzidos serão exibidos aqui -->
+    <div class="gesture-cards" id="gestureCards">
+      <!-- Os cards com o modelo de mão e a palavra traduzida serão inseridos aqui -->
     </div>
   </div>
   
   <script>
-    // Dicionário de traduções simples (palavra em minúsculas para classe de gesto)
-    const translations = {
+    // Dicionário simples de gestos para palavras (exemplos – expanda conforme necessário)
+    const gestureDictionary = {
       "olá": "wave",
-      "amor": "heart",
-      "bom": "thumbs-up",
-      "obrigado": "thank-you",
-      "sim": "yes",
-      "não": "no"
+      "amor": "nod",
+      "sim": "nod",
+      "não": "shake",
+      "obrigado": "wave",
+      "tchau": "shake"
     };
 
-    // Ao clicar no botão Traduzir, processa o texto e gera as animações de gestos
     document.getElementById('translateButton').addEventListener('click', function() {
       const inputText = document.getElementById('textInput').value.trim();
-      const gestureDisplay = document.getElementById('gestureDisplay');
-      
-      // Limpa o display de gestos anterior
-      gestureDisplay.innerHTML = "";
+      const cardsContainer = document.getElementById('gestureCards');
+      // Limpa os cards anteriores
+      cardsContainer.innerHTML = "";
       
       if (!inputText) {
-        gestureDisplay.innerHTML = "<p style='color: #ff8080;'>Por favor, digite um texto.</p>";
+        cardsContainer.innerHTML = "<p style='color: #ff8080;'>Por favor, digite um texto.</p>";
         return;
       }
       
-      // Separa o texto em palavras
+      // Separa o texto em palavras (considerando espaços)
       const words = inputText.split(/\s+/);
       
       words.forEach(word => {
-        // Normaliza a palavra para minúsculas e remove pontuação
         const normalized = word.toLowerCase().replace(/[.,!?]/g, "");
-        // Procura a tradução; se não encontrar, usa "unknown"
-        const gestureClass = translations[normalized] || "unknown";
+        // Procura o gesto no dicionário; se não houver, usa "default"
+        const gestureClass = gestureDictionary[normalized] || "default";
         
-        // Cria o elemento para o gesto
-        const gestureEl = document.createElement('div');
-        gestureEl.className = `gesture ${gestureClass}`;
-        // Exibe a palavra original (ou um ícone, se desejar)
-        gestureEl.textContent = normalized;
-        // Adiciona o elemento à área de saída
-        gestureDisplay.appendChild(gestureEl);
+        // Cria um card para o gesto
+        const card = document.createElement('div');
+        card.className = "gesture-card";
+        
+        // Cria o modelo de mão
+        const hand = document.createElement('div');
+        hand.className = `hand ${gestureClass}`;
+        
+        // Cria os elementos que compõem a mão
+        const palm = document.createElement('div');
+        palm.className = "palm";
+        hand.appendChild(palm);
+        
+        for (let i = 1; i <= 4; i++) {
+          const finger = document.createElement('div');
+          finger.className = `finger finger${i}`;
+          hand.appendChild(finger);
+        }
+        const thumb = document.createElement('div');
+        thumb.className = "thumb";
+        hand.appendChild(thumb);
+        
+        // Cria o elemento para exibir a palavra traduzida
+        const wordEl = document.createElement('div');
+        wordEl.className = "translated-word";
+        wordEl.textContent = normalized;
+        
+        // Adiciona a mão e a palavra ao card
+        card.appendChild(hand);
+        card.appendChild(wordEl);
+        
+        // Adiciona o card ao container
+        cardsContainer.appendChild(card);
       });
     });
   </script>
